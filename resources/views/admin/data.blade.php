@@ -36,6 +36,7 @@
 </head>
 
 <body>
+
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="sidebar" data-background-color="dark">
@@ -335,12 +336,12 @@
                                                 </a>
                                                 <a href="#">
                                                     <div class="notif-img">
-                                                        <img src="{{ asset('assets/img/talha.jpg') }}"
+                                                        <img src="{{ asset('assets/img/taha.jpg') }}"
                                                             alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
                                                         <span class="subject">Talha</span>
-                                                        <span class="block"> Hi, Apa Kabar ? </span>
+                                                        <span class="block"> Hi, </span>
                                                         <span class="time">17 minutes ago</span>
                                                     </div>
                                                 </a>
@@ -495,7 +496,7 @@
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
+                                        <span class="fw-bold"> {{ Auth::guard('admin')->user()->username }}</span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -598,6 +599,14 @@
             lineWidth: "2",
             lineColor: "#ffa534",
             fillColor: "rgba(255, 165, 52, .14)",
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('error'))
+                alert('{{ session('error') }}');
+            @endif
+            @if (session('success'))
+                alert('{{ session('success') }}');
+            @endif
         });
     </script>
 </body>

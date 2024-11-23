@@ -47,8 +47,6 @@
                                         class="bx bxs-user"></i></span>
                                 <input type="text" name="username" placeholder="Username"
                                     class="w-full h-full bg-transparent border-none outline-none text-lg font-medium pr-6">
-                                <label
-                                    class="absolute text-lg font-medium pl-2 transform -translate-y-1/2 top-1/2 left-2 pointer-events-none transition-all">Username</label>
                                 @error('username')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror

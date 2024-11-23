@@ -45,7 +45,7 @@
                             <div class="input-box relative w-full h-12 mb-8 border-b-2">
                                 <span class="icon absolute top-1/2 right-0 transform -translate-y-1/2 text-lg"><i
                                         class="bx bxs-envelope"></i></span>
-                                <input type="text" name="login" placeholder="Email/Username" 
+                                <input type="text" name="login" placeholder="Email/Username"
                                     class="w-full h-full bg-transparent border-none outline-none text-lg font-medium pr-6">
                                 @error('email')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -82,7 +82,18 @@
     </div>
     </section>
     </div>
-    <script src="signIn.js"></script>
+    <script>
+        
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session('error'))
+                    alert('{{ session('error') }}')
+                @endif
+                @if (session('success'))
+                    alert('{{ session('success') }}')
+                @endif
+            })
+    
+    </script>
 </body>
 
 </html>

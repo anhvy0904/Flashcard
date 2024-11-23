@@ -13,7 +13,7 @@ class Card extends Model
         'question',
         'answer',
         'image',
-        'setcard_id',
+        'set_card_id',
     ];
     public function setCard()
     {

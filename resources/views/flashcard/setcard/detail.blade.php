@@ -3,46 +3,34 @@
 <style>
     /* Custom CSS */
     .perspective-1000 {
-        perspective: 1000px;
-    }
-
-    .backface-hidden {
-        backface-visibility: hidden;
+        perspective: 1000px; /* Tạo hiệu ứng 3D */
     }
 
     .transform-style-preserve-3d {
-        transform-style: preserve-3d;
+        transform-style: preserve-3d; /* Giữ không gian 3D */
+        transition: transform 0.6s; /* Tạo hiệu ứng chuyển động mượt */
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden; /* Ẩn mặt sau khi không hiển thị */
     }
 
     .rotate-y-180 {
-        transform: rotateY(180deg);
+        transform: rotateY(180deg); /* Xoay mặt sau */
     }
 
     .flip .transform-style-preserve-3d {
-        transform: rotateY(180deg);
+        transform: rotateY(180deg); /* Lật thẻ khi thêm class flip */
     }
 
     .card-height {
-        height: 20rem;
+        height: 20rem; /* Chiều cao cố định của thẻ */
     }
 </style>
+
 @stop()
 @section('homebody')
 <body class="bg-light">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=50&h=50" alt="Logo" class="rounded-circle me-2" style="height: 40px; width: 40px;">
-                <span class="text-primary fw-bold">SmartCards</span>
-            </a>
-            <div class="d-flex">
-                <a href="#" class="btn btn-primary me-2">Create Card</a>
-                <a href="#" class="btn btn-outline-secondary">Sign In</a>
-            </div>
-        </div>
-    </nav>
-
     <!-- Main Content -->
     <main class="container py-5">
         <div class="row g-4">
@@ -52,28 +40,34 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="card-title">Current Deck: Mathematics</h5>
+                            <h5 class="card-title">{{$setCard->title}}</h5>
                             <div>
-                                <button class="btn btn-outline-secondary btn-sm me-2">
-                                    <i class="bi bi-arrow-left"></i>
+                                <button class="btn btn-outline-secondary btn-sm me-2" disabled>
+                                    <i class="fas fa-arrow-left"></i>
                                 </button>
+                                <span id="progress"></span>
                                 <button class="btn btn-outline-secondary btn-sm">
-                                    <i class="bi bi-arrow-right"></i>
+                                    <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="perspective-1000 card-height" onclick="this.classList.toggle('flip')">
-                            <div class="position-relative w-100 h-100 transform-style-preserve-3d">
-                                <div class="position-absolute w-100 h-100 bg-white rounded shadow border backface-hidden p-4">
-                                    <h5 class="text-center">What is the derivative of x²?</h5>
-                                    <p class="text-muted text-center">Click to flip</p>
-                                </div>
-                                <div class="position-absolute w-100 h-100 bg-light rounded shadow border backface-hidden rotate-y-180 p-4">
-                                    <h5 class="text-center">2x</h5>
-                                    <p class="text-muted text-center">Click to flip back</p>
+                        @foreach ($setCard->cards as $card ) 
+                            <div class="perspective-1000 card-height" onclick="this.classList.toggle('flip')">
+                                <div class="position-relative w-100 h-100 transform-style-preserve-3d">
+                                    <!-- Mặt trước -->
+                                    <div class="position-absolute w-100 h-100 bg-white rounded shadow border backface-hidden p-4">
+                                        <h5 class="text-center">{{$card->question}}</h5>
+                                        <p class="text-muted text-center">Click to flip</p>
+                                    </div>
+                                    <!-- Mặt sau -->
+                                    <div class="position-absolute w-100 h-100 bg-light rounded shadow border backface-hidden rotate-y-180 p-4">
+                                        <h5 class="text-center">{{$card->answer}}</h5>
+                                        <p class="text-muted text-center">Click to flip back</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
+                        
                         <div class="d-flex justify-content-center gap-3 mt-4">
                             <button class="btn btn-danger">Need Review</button>
                             <button class="btn btn-success">Got It!</button>

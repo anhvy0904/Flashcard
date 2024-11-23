@@ -47,7 +47,17 @@
             <a href="#" class="text-red-600 hover:text-red-800">Quên mật khẩu?</a>
         </p>
     </div>
-
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        @if (session('error')
+            )
+            alert('{{ session('error') }}')
+        @endif
+        @if (session('success'))
+            alert('{{ session('success') }}')
+        @endif
+    })
+    </script>
 </body>
 
 </html>

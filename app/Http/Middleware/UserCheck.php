@@ -6,8 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
-class AdminCheck
+class UserCheck
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,10 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth('admin')->check()) {
+        if (auth('web')->check()) {
             return $next($request);
         }
-        return redirect()->route('admin.login');
+        return redirect()->route('login');
         
     }
 }

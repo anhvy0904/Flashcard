@@ -2,26 +2,34 @@
 @section('homebody')
     <div class="container py-5">
         <h1 class="text-center mb-4">Thêm Set Flashcard</h1>
-        <form action="{{ route('setcards.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('setcard.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <!-- Tiêu đề Set -->
             <div class="mb-3">
                 <label for="setTitle" class="form-label">Tiêu đề của Set</label>
                 <input type="text" class="form-control" id="setTitle" name="setTitle" placeholder="Nhập tiêu đề cho set" required>
+                @error('setTitle')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
-    
+            
             <!-- Mô tả -->
             <div class="mb-3">
                 <label for="setDescription" class="form-label">Mô tả</label>
                 <textarea class="form-control" id="setDescription" name="setDescription" rows="3" placeholder="Nhập mô tả"></textarea>
+                @error('setDescription')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
             </div>
     
             <!-- Hình ảnh Set -->
             <div class="mb-3">
-                <label for="setImage" class="form-label">Hình ảnh Set</label>
+                <label for="setImage" class="form-label">Hình ảnh</label>
                 <input type="file" class="form-control" id="setImage" name="setImage" accept="image/*">
                 <div class="image-preview mt-3" id="imagePreview">
-                    <span>Chưa chọn hình ảnh</span>
+                    @error('setImage')
+                    <p class="text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
     
@@ -34,10 +42,16 @@
                         <div class="mb-3">
                             <label for="questions[0][question]" class="form-label">Câu hỏi</label>
                             <input type="text" class="form-control" id="questions[0][question]" name="questions[0][question]" placeholder="Nhập câu hỏi" required>
+                            @error('questions[0]question')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="questions[0][answer]" class="form-label">Câu trả lời</label>
                             <textarea class="form-control" id="questions[0][answer]" name="questions[0][answer]" rows="2" placeholder="Nhập câu trả lời" required></textarea>
+                            @error('questions[0]answer')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -61,12 +75,11 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Hình ảnh set" class="img-fluid">`;
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Hình ảnh" class="img-fluid">`;
                 };
                 reader.readAsDataURL(file);
-            } else {
-                preview.innerHTML = '<span>Chưa chọn hình ảnh</span>';
             }
+            
         });
     
         // Thêm câu hỏi mới
@@ -78,10 +91,16 @@
                         <div class="mb-3">
                             <label for="questions[${questionCount}][question]" class="form-label">Câu hỏi</label>
                             <input type="text" class="form-control" id="questions[${questionCount}][question]" name="questions[${questionCount}][question]" placeholder="Nhập câu hỏi" required>
+                            @error('questions[${questionCount}][question]')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="questions[${questionCount}][answer]" class="form-label">Câu trả lời</label>
+                            <label for="questions[${questionCount}][answer]" class="form-label">Câu trả lời</label>                            
                             <textarea class="form-control" id="questions[${questionCount}][answer]" name="questions[${questionCount}][answer]" rows="2" placeholder="Nhập câu trả lời" required></textarea>
+                            @error('questions[${questionCount}][answer]')
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>`;

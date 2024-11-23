@@ -79,8 +79,8 @@
                             </a>
 
                         </li>
-                        <li class="nav-item" {{ Request::is('detail')}}>
-                            <a href="{{route('detail')}}">
+                        <li class="nav-item" {{ Request::is('detail') }}>
+                            <a href="{{ route('detail') }}">
                                 <i class="fas fa-th-list"></i>
                                 <p>Chi tiết</p>
 
@@ -423,7 +423,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link" href="{{route('setcard.create')}}" aria-expanded="false">
+                                <a class="nav-link" href="{{ route('setcard.create') }}" aria-expanded="false">
                                     <i class="fas fa-plus"></i>
                                 </a>
                                 <div class="dropdown-menu quick-actions animated fadeIn">
@@ -497,7 +497,7 @@
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
+                                        <span class="fw-bold">{{ auth('web')->user()->username }}</span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -524,7 +524,10 @@
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">Account Setting</a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Logout</a>
+                                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                                Logout
+                                            </a>
+    
                                         </li>
                                     </div>
                                 </ul>
@@ -601,6 +604,15 @@
             lineColor: "#ffa534",
             fillColor: "rgba(255, 165, 52, .14)",
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('error'))
+                alert('{{ session('error') }}');
+            @endif
+            @if (session('success'))
+                alert('{{ session('success') }}');
+            @endif
+        });
+        
     </script>
 </body>
 

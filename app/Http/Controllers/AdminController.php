@@ -15,6 +15,9 @@ class AdminController extends Controller
 
     public function login()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard')->with('error', 'Bạn đã đăng nhập. Vui lòng đăng xuất trước.');
+        }
         return view('admin.login');
     }
 
@@ -39,7 +42,7 @@ class AdminController extends Controller
         } else {
             return back();
         }
-    }
+    }   
     public function logout()
     {
         Auth::guard('admin')->logout();

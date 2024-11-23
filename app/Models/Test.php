@@ -11,7 +11,7 @@ class Test extends Model
     use HasFactory,Notifiable;
     protected $table = 'tests';
     protected $fillable = [
-        'setcard_id',
+        'set_card_id',
     ];
     public function user()
     {

@@ -13,6 +13,9 @@ class UserController extends Controller
 {
     public function register()
     {
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard')->with('error', 'Bạn đã đăng nhập. Vui lòng đăng xuất trước.');
+        }
         return view('flashcard.register');
     }
     public function post_register(Request $request)
@@ -29,10 +32,13 @@ class UserController extends Controller
         $user->password= $request->input('password');
         $user->save();
         Auth::login($user);
-        return redirect()->route('flashcard.dashboard')->with('success', 'Đăng ký thành công!');
+        return redirect()->route('dashboard')->with('success', 'Đăng ký thành công!');
     }
     public function login()
     {
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard')->with('error', 'Bạn đã đăng nhập. Vui lòng đăng xuất trước.');
+        }
         return view('flashcard.login');
     }
     public function post_login(Request $request)
@@ -49,15 +55,15 @@ class UserController extends Controller
         $remember = $request->filled('remember');
         if (auth('web')->attempt($data, $remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('flashcard/dashboard');
+            return redirect()->intended('dashboard');
         } else {
-            return back();
+            return back()->with('error', 'Tài khoản hoặc mật khẩu không đúng!');
         }
     }
     public function logout()
-    {
+    {   
         Auth::logout();
-        return redirect()->route('flashcard.login');
+        return redirect()->route('login');
     }
     public function dashboard()
     {
