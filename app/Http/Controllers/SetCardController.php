@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Card;
 use Illuminate\Support\Facades\Log;
 
+
 class SetCardController extends Controller
 {
     /**
@@ -76,11 +77,17 @@ class SetCardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SetCard $setCard)
-    {
-        $setCard->load('cards');
-        return view('flashcard.setcard.detail', compact('setCard'));
-    }
+        public function show(SetCard $setcard)
+        {  
+            $setcard->load('cards','comments.user');
+            $checkmode = request('checkmode');
+            if ($checkmode == 'quiz') {
+                return view('flashcard.setcard.detail.quiz', compact('setcard'));
+            }
+            else
+            {
+            return view('flashcard.setcard.detail.flip', compact('setcard'));
+        }}
 
     /**
      * Show the form for editing the specified resource.

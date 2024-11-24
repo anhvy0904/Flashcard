@@ -17,6 +17,7 @@ Route::middleware([UserCheck::class])->group(function () {
     Route::get('/detail', [UserController::class, 'detail'])->name('detail');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::resource('/setcard', SetCardController::class);
+    
     // Route:get('/login/',[UserController::class , 'login'])->name('login');
     // Route::get('/', 'FlashCardController@index')->name('flashcard.index');
     // Route::get('/login','AuthController@login')->name('user.login');
