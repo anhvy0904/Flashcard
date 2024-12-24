@@ -1,4 +1,4 @@
-@extends('flashcard.data')
+@extends('admin.data')
 @section('css')
     <style>
         /* Custom CSS */
@@ -41,8 +41,7 @@
 
     <body class="bg-light">
         <!-- Main Content -->
-        <main class="container py-5">
-            <div class="row g-4">
+        <main class="container py-5 d-flex justify-content-center align-items-center">
                 <!-- Main Content Section -->
                 <div class="col-lg-8">
                     <!-- Flashcard Section -->
@@ -55,7 +54,7 @@
                                         <i class="fas fa-arrow-left"></i>
                                     </button>
                                     <span id="progress"></span>
-                                    <button id="next-btn" class="btn btn-outline-secondary btn-sm">
+                                  s  <button id="next-btn" class="btn btn-outline-secondary btn-sm">
                                         <i class="fas fa-arrow-right"></i>
                                     </button>
                                 </div>
@@ -77,20 +76,14 @@
                                 </div>
                             </div>
 
-
-                            <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button class="btn btn-danger">Need Review</button>
-                                <button class="btn btn-success">Got It!</button>
-                            </div>
-
                             <div class="progress-container">
-                                <h5>Study Progress</h5>
+                                <h3>Tiến trình học</h3>
                                 <div class="progress">
                                     <div id="progress-bar" class="progress-bar bg-primary" style="width: 0%;"></div>
                                 </div>
                                 <div class="d-flex justify-content-between text-muted">
-                                    <span id="progress-percentage">0% Complete</span>
-                                    <span id="progress-count">0/0 Cards</span>
+                                    <span id="progress-percentage">0% Hoàn thành</span>
+                                    <span id="progress-count">0/0 Số thẻ</span>
                                 </div>
                             </div>
 
@@ -117,6 +110,11 @@
                                         <p class="card-text">{{ $comment->content }}</p>
                                         <p class="text-muted"><small>{{ $comment->created_at->diffForHumans() }}</small></p>
                                     </div>
+                                    <form action="{{ route('comment.destroy', $comment->id) }}" method="POST" onsubmit="return confirmDelete()" class="ms-3">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2">Xóa</button>
+                                    </form>
                                 </div>
                             @endforeach
                         </div>
@@ -139,37 +137,7 @@
                     </div>
                 </div> --}}
                 </div>
-
-                <!-- Sidebar Section -->
-                <div class="col-lg-4">
-                    <!-- Study Modes -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Chế độ học</h5>
-                            <div class="list-group">
-                                <a href="{{ route('setcard.show', $setcard->id) }}" class="list-group-item list-group-item-action d-flex align-items-center">
-                                    <span class="badge bg-primary rounded-circle me-3">F</span> Chế độ lật thẻ
-                                </a>
-                                <a href="{{ route('setcard.show', $setcard->id) }}?checkmode=quiz"
-                                    class="list-group-item list-group-item-action d-flex align-items-center">
-                                    <span class="badge bg-secondary rounded-circle me-3">Q</span> Chế độ kiểm tra
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Categories -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Bộ thẻ gần đây</h5>
-                            <div class="list-group">
-                                <a href="#" class="list-group-item list-group-item-action active">Tiếng anh</a>
-                                <a href="#" class="list-group-item list-group-item-action">Trò chơi</a>
-                                <a href="#" class="list-group-item list-group-item-action">Học code</a>
-                                <a href="#" class="list-group-item list-group-item-action">Tên động vật</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Achievements -->
+                <!-- Achievements -->
                     {{-- <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">Achievements</h5>
@@ -192,8 +160,8 @@
                             </div>
                         </div>
                     </div> --}}
-                </div>
-            </div>
+                
+            
         </main>
         <script>
             const cards = @json($setcard->cards);
@@ -213,9 +181,14 @@
             function updateProgress() {
                 const progress = ((currentIndex + 1) / cards.length) * 100;
                 progressBar.style.width = progress + "%";
-                progressPercentage.innerText = `${Math.round(progress)}% Complete`;
-                progressCount.innerText = `${currentIndex + 1}/${cards.length} Cards`;
+                progressPercentage.innerText = `${Math.round(progress)}% Hoàn thành`;
+                progressCount.innerText = `${currentIndex + 1}/${cards.length} Số thẻ`;
             }
+
+            function confirmDelete() {
+            return confirm('Bạn có chắc chắn muốn xóa comment này không?');
+        }
+
 
             function loadCard(index) {
                 frontdata.innerText = cards[index].question;

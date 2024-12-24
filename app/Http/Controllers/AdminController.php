@@ -6,11 +6,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
+use App\Models\SetCard;
+use App\Models\User;
+use App\Models\TestResult;
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard.dashboard');
+        $totalSetCards = SetCard::count();
+            $totalUsers = User::count();
+            $totalTestResults = TestResult::count();
+            $monthlyRegistrations = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+                ->groupBy('month')
+                ->orderBy('month')
+                ->pluck('count', 'month')
+                ->toArray();
+        return view('admin.dashboard.dashboard')->with(
+            [
+                'totalSetCards' => $totalSetCards,
+                'totalUsers' => $totalUsers,
+                'totalTestResults' => $totalTestResults,
+                'monthlyRegistrations' => $monthlyRegistrations,
+            ]
+        );
     }
 
     public function login()
@@ -38,15 +56,17 @@ class AdminController extends Controller
         if (Auth::guard('admin')->attempt($data, $remember))
         {
             $request->session()->regenerate();
-            return redirect()->intended('admin/dashboard');
+            ;
+
+            return redirect()->route('admin.dashboard');
         } else {
             return back();
         }
-    }   
+    }
     public function logout()
     {
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
-    }
+    } 
 
 }

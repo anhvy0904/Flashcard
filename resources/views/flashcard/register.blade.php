@@ -5,98 +5,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Flashcards</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body class="no-text-cursor bg-gray-100 min-h-screen pt-16">
-    <nav class="bg-white shadow-lg fixed top-0 w-full z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <h1 class="text-2xl font-bold">FlashCard</h1>
-                <button class="bg-sign-in text-white px-4 py-2 rounded-lg hover:bg-opacity-80 btnLogin-popup">Sign
-                    in</button>
-            </div>
+<body class="bg-light min-vh-100 pt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{route('login')}}">FlashCard</a>
+            <button class="btn btn-primary btnLogin-popup" onclick="{{route('login')}}">Sign in</button>
         </div>
     </nav>
-    <div class="absolute inset-0 -z-10">
-        <img src="background.jpg" alt="Background" class="object-cover w-full h-full">
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1;">
+        <img src="background.jpg" alt="Background" class="img-fluid w-100 h-100 object-cover">
     </div>
     <!-- Login/Register Popup Section -->
-    <div class="bg-gray-100">
+    <div class="bg-light">
         <section class="section">
-            <div
-                class="popup-Container fixed inset-0 bg-transparent backdrop-blur-sm shadow-lg border-l-2 border-white/10 z-100 flex items-center justify-center p-10 transition-opacity duration-300 ease-in-out">
-                <span
-                    class="absolute top-0 right-0 w-11 h-11 cursor-pointer flex items-center justify-center rounded-bl-lg">
-                    <i class='bx bx-x text-2xl text-gray-800'></i>
+            <div class="popup-Container position-fixed top-0 start-0 w-100 h-100 bg-transparent backdrop-blur-sm shadow-lg border-start border-white-50 d-flex align-items-center justify-content-center p-4" style="z-index: 100;">
+                <span class="position-absolute top-0 end-0 p-3 cursor-pointer d-flex align-items-center justify-content-center rounded-bottom-start">
+                    <i class='bx bx-x fs-2 text-dark'></i>
                 </span>
-                <div class="logreg-box w-1/2">
+                <div class="logreg-box w-50">
                     <!-- Register Form -->
-                    <div class="form-box register block">
-                        <div class="logreg-title text-center mb-10 -mt-10">
-                            <h2 class="text-4xl">Register</h2>
-                            <p class="text-sm font-medium">Please register to use the platform</p>
+                    <div class="form-box register d-block">
+                        <div class="logreg-title text-center mb-4">
+                            <h2 class="display-4">Register</h2>
+                            <p class="text-muted">Đăng kí vào nền tảng</p>
                         </div>
                         <form method="POST">
                             @csrf
                             <!-- Username Input -->
-                            <div class="input-box relative w-full h-12 mb-8 border-b-2">
-                                <span class="icon absolute top-1/2 right-0 transform -translate-y-1/2 text-lg"><i
-                                        class="bx bxs-user"></i></span>
-                                <input type="text" name="username" placeholder="Username"
-                                    class="w-full h-full bg-transparent border-none outline-none text-lg font-medium pr-6">
+                            <div class="mb-3 position-relative">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" name="username" id="username" class="form-control" placeholder="Username">
                                 @error('username')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
                             <!-- Email Input -->
-                            <div class="input-box relative w-full h-12 mb-8 border-b-2">
-                                <span class="icon absolute top-1/2 right-0 transform -translate-y-1/2 text-lg"><i
-                                        class="bx bxs-envelope"></i></span>
-                                <input type="email" name="email"  placeholder="Email"
-                                    class="w-full h-full bg-transparent border-none outline-none text-lg font-medium pr-6">
+                            <div class="mb-3 position-relative">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Email">
                                 @error('email')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
                             <!-- Password Input -->
-                            <div class="input-box relative w-full h-12 mb-8 border-b-2">
-                                <span class="icon absolute top-1/2 right-0 transform -translate-y-1/2 text-lg"><i
-                                        class="bx bxs-lock-alt"></i></span>
-                                <input type="password" name="password"  placeholder="Password"
-                                    class="w-full h-full bg-transparent border-none outline-none text-lg font-medium pr-6">
-                            
+                            <div class="mb-3 position-relative">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                                 @error('password')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
                             <!-- Confirm Password Input -->
-                            <div class="input-box relative w-full h-12 mb-8 border-b-2">
-                                <span class="icon absolute top-1/2 right-0 transform -translate-y-1/2 text-lg"><i
-                                        class="bx bxs-lock-alt"></i></span>
-                                <input type="password" name="confirm_password" placeholder="Confirm Password"
-                                    class="w-full h-full bg-transparent border-none outline-none text-lg font-medium pr-6">
+                            <div class="mb-3 position-relative">
+                                <label for="confirm_password" class="form-label">Confirm Password</label>
+                                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password">
                                 @error('confirm_password')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <button type="submit"
-                                class="btn w-full h-12 bg-blue-500 border-none rounded-full shadow-lg text-lg text-gray-800 font-semibold">Register</button>
-                            <div class="logreg-link text-sm text-center font-medium my-6">
-                                <p>Already have an account? <a href="{{ route('login') }}"
-                                        class="register-link text-blue-500 font-semibold hover:underline">Login</a>
-                                </p>
+                            <button type="submit" class="btn btn-primary w-100 py-2">Register</button>
+                            <div class="logreg-link text-center mt-3">
+                                <p>Already have an account? <a href="{{ route('login') }}" class="text-primary">Login</a></p>
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
+        </section>
     </div>
-    </section>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="signIn.js"></script>
 </body>
 

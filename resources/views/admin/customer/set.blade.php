@@ -1,4 +1,4 @@
-@extends('flashcard.data')
+@extends('admin.data')
 @section('css')
     <style>
         /* Thiết kế Set Flashcard */
@@ -63,12 +63,8 @@
 
     <body>
         <div class="container py-5">
-            <h1 class="text-center mb-4">Danh sách FlashCard của bạn</h1>
+            <h1 class="text-center mb-4">Danh sách FlashCard của {{$user->username}}</h1>
 
-            <!-- Nút tạo mới -->
-            <div class="text-center mb-4">
-                <a href="{{ route('setcard.create') }}" class="btn btn-primary rounded">+ Tạo</a>
-            </div>
             <!-- Danh sách Set -->
             <div id="setList" class="row g-4">
                 @forelse ($setCards as $setCard)
@@ -79,7 +75,7 @@
                             <div class="card-body">
                                 <h5 class="card-title text-center">{{ $setCard->title }}</h5>
                                 <p class="card-text">{{ $setCard->description }}</p>
-                                <a href="{{ route('setcard.show', $setCard->id) }}" class="btn btn-primary">Xem chi tiết</a>
+                                <a href="{{ route('customer.setCardDetail', [$user->id , $setCard->id]) }}" class="btn btn-primary">Xem chi tiết</a>
                             </div>
                             <form action="{{ route('setcard.destroy', $setCard->id) }}" method="POST" onsubmit="return confirmDelete()" class="position-absolute top-0 end-0 m-2">
                                 @csrf

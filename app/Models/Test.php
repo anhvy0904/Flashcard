@@ -11,14 +11,20 @@ class Test extends Model
     use HasFactory,Notifiable;
     protected $table = 'tests';
     protected $fillable = [
-        'set_card_id',
+        'setcard_id',
+        
+
     ];
-    public function user()
+    public function testdetails()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(TestDetail::class);
     }
-    public function cards()
+    public function testResults()
     {
-        return $this->hasMany(Card::class);
+        return $this->hasOne(TestResult::class);
+    }
+    public function setcard()
+    {
+        return $this->belongsTo(SetCard::class);
     }
 }

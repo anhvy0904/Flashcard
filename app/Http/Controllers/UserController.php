@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SetCard;
 use App\Models\Card;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -67,69 +70,64 @@ class UserController extends Controller
     }
     public function dashboard()
     {
-        return view('flashcard.dashboard');
+        $recentCards = SetCard::orderBy('created_at', 'desc')->take(3)->get();
+        $featuredCards = SetCard::orderBy('views', 'desc')->take(3)->get();
+
+        return view('flashcard.dashboard',compact('recentCards', 'featuredCards'));
     }
-    public function addcard()
+    public function ForgotPassword()
     {
-        return view('flashcard.add');
+        return view('flashcard.password.index');
     }
-    public function setcard()
+    public function sendMail(Request $request)
     {
-        return view('flashcard.setcard.set');
-    }
-    public function post_addcard(Request $request)
-    {
-        $request->validate([
-            'question' => 'required',
-            'answer' => 'required',
+        $request->validate(['email' => 'required|email']);
+        // Gửi mã số về email của người dùng
+        $token = Password::getRepository()->createNewToken();
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now(),
         ]);
-        $setcard = new SetCard();
-        $setcard->title = $request->input('title');
-        $setcard->description = $request->input('description');
-        $setcard->user_id = Auth::id();
-        $setcard->image = $request->input('image');
-        $setcard->save();
-        $card = new Card();
-        $card->question = $request->input('question');
-        $card->answer = $request->input('answer');
-        $card->image = $request->input('image');
-        $card->set_card_id = $setcard->id;
-        $card->user_id = Auth::id();
-        $card->save();
-        return redirect()->route('flashcard.dashboard')->with('success', 'Flashcard đã được thêm thành công!');
+
+        Mail::send('flashcard.password.password', ['token' => $token], function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Password Reset Code');
+        });
+
+        return response()->json(['success' => 'Reset code sent to your email.']);
     }
-    // public function editcard($id)
-    // {
-    //     $card = Card::find($id);
-    //     return view('flashcard.edit', compact('card'));
-    // }
-    // public function post_editcard(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'question' => 'required',
-    //         'answer' => 'required',
-    //     ]);
-    //     $card = Card::find($id);
-    //     $card->question = $request->input('question');
-    //     $card->answer = $request->input('answer');
-    //     $card->image = $request->input('image');
-    //     $card->save();
-    //     return redirect()->route('flashcard.dashboard')->with('success', 'Flashcard đã được cập nhật thành công!');
-    // }
-    // public function deletecard($id)
-    // {
-    //     $card = Card::find($id);
-    //     $card->delete();
-    //     return redirect()->route('flashcard.dashboard')->with('success', 'Flashcard đã được xóa thành công!');
-    // }
-    public function deletesetcard($id)
+    
+    public function resetPassword( Request $request)
     {
-        $setcard = SetCard::find($id);
-        $setcard->delete();
-        return redirect()->route('flashcard.dashboard')->with('success', 'Setcard đã được xóa thành công!');
+        $token = $request->verification_code;
+        $passwordReset = DB::table('password_resets')->where('token', $token)->first();
+
+        if (!$passwordReset) {
+            return redirect()->route('user.forgotPassword')->with('error', 'Token không hợp lệ hoặc đã hết hạn!');
+        }
+
+        return view('flashcard.password.reset', ['token' => $token, 'email' => $passwordReset->email]);
+    
     }
-    public function detail()
-    {
-        return view('flashcard.detailcard');
+    public function updatePassword(Request $request)
+    {   
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+            'password_confirmation' => 'required|same:password',
+        ]);
+        $passwordReset = DB::table('password_resets')->where('email', $request->email)->first();
+        if (!$passwordReset) {
+            return redirect()->route('user.forgotPassword')->with('error', 'Token không hợp lệ hoặc đã hết hạn!');
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = $request->password;
+        $user->save();
+
+        DB::table('password_resets')->where('email', $request->email)->delete();
+
+        return redirect()->route('login')->with('success', 'Mật khẩu đã được cập nhật!');
     }
 }

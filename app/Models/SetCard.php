@@ -14,6 +14,7 @@ class SetCard extends Model
         'description',
         'image',
         'user_id',
+        'views',
     ];
     public function user()
     {
@@ -21,7 +22,7 @@ class SetCard extends Model
     }
     public function cards()
     {
-        return $this->hasMany(Card::class);
+        return $this->hasMany(Card::class, 'setcard_id');
     }
     public function tests()
     {

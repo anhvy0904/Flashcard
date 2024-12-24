@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Models\Comment;
 class CustomerController extends Controller
 {
     /**
@@ -116,5 +116,23 @@ class CustomerController extends Controller
     {
         $customer->delete();
         return redirect()->route('customer.index')->with('success', 'Người dùng đã được xóa thành công');
+    }
+    public function userListSetCard($id){
+        $user = User::findOrFail($id);
+        $setCards = $user->setcards()->latest()->get();
+
+        // Trả về view hiển thị danh sách bộ thẻ
+        return view('admin.customer.set', compact('user', 'setCards'));
+    }
+    public function userListSetCardDetail($id, $setcard){
+        $user = User::findOrFail($id);
+        $setcard = $user->setcards()->findOrFail($setcard);
+        $cards = $setcard->cards;
+        $comments = Comment::with('user')
+        ->where('setcard_id', $setcard->id)
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
+
+        return view('admin.customer.flip', compact('user', 'setcard', 'cards','comments'));
     }
 }

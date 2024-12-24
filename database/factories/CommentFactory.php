@@ -25,7 +25,7 @@ class CommentFactory extends Factory
     {
         return [
             "user_id" => 1,
-            "set_card_id" => 1,
+            "setcard_id" => 1,
             "comment" => $this->faker->text(),
 
         ];

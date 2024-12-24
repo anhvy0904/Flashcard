@@ -3,12 +3,7 @@
 <div class="page-inner">
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
-            <h3 class="fw-bold mb-3">Dashboard</h3>
-            <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
-        </div>
-        <div class="ms-md-auto py-2 py-md-0">
-            <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-            <a href="#" class="btn btn-primary btn-round">Add Customer</a>
+            <h3 class="fw-bold mb-3">Trang chủ</h3>
         </div>
     </div>
     <div class="row">
@@ -24,7 +19,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Tổng Người dùng</p>
-                                <h4 class="card-title">1,294</h4>
+                                <h4 class="card-title">{{ $totalUsers }}</h4>
                             </div>
                         </div>
                     </div>
@@ -42,8 +37,8 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Tổng thẻ nhớ</p>
-                                <h4 class="card-title">1303</h4>
+                                <p class="card-category">Tổng thẻ nhớ được tạo</p>
+                                <h4 class="card-title">{{ $totalSetCards }}</h4>
                             </div>
                         </div>
                     </div>
@@ -61,8 +56,8 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Tổng các môn học</p>
-                                <h4 class="card-title">$ 1,345</h4>
+                                <p class="card-category">Tổng bài kiểm tra đã thực hiện</p>
+                                <h4 class="card-title">{{ $totalTestResults}}</h4>
                             </div>
                         </div>
                     </div>
@@ -101,5 +96,46 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const monthlyRegistrations = @json($monthlyRegistrations);
+        const labels = Object.keys(monthlyRegistrations).map(month => `Tháng ${month}`);
+        const value = Object.values(monthlyRegistrations);
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Số người dùng đăng ký',
+                data: value,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Màu nền
+                borderColor: 'rgba(75, 192, 192, 1)',       // Màu đường viền
+                borderWidth: 1
+            }]
+        };
+    
+        // Cấu hình Chart.js
+        const config = {
+            type: 'line', // Loại biểu đồ: line, bar, pie, etc.
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true, // Hiển thị chú thích
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true // Bắt đầu từ 0 trên trục Y
+                    }
+                }
+            }
+        };
+    
+        // Khởi tạo biểu đồ
+        const ctx = document.getElementById('statisticsChart').getContext('2d');
+        const statisticsChart = new Chart(ctx, config);
+    </script>
+    
 </div>
 @stop()

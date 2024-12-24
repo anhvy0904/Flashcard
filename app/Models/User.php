@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\TestResult;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -49,10 +49,14 @@ class User extends Authenticatable
     }
     public function setCards()
     {
-        return $this->hasMany(Card::class);
+        return $this->hasMany(SetCard::class);
     }
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function testResults()
+    {
+        return $this->hasMany(TestResult::class);
     }
 }

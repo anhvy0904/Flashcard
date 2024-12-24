@@ -43,7 +43,6 @@
                 </button>
             </div>
             <input type="text" placeholder="Tìm kiếm ..." class="form-control" name='search' />
-    
         </div>
         </form>
     </nav>
@@ -54,95 +53,39 @@
         <div>
             <h3 class="fw-bold mb-3">Gần đây</h3>
         </div>
-        <div class="ms-md-auto py-2 py-md-0">
-            <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-            <a href="#" class="btn btn-primary btn-round">Thêm thẻ</a>
-        </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="Course Image">
-                <div class="card-body  text-center">
-                    <h5 class="card-title">Học lập trình Web Frontend với HTML, CSS, và JavaScript</h5>
-                    <p class="card-text">
-                        Đây là khóa học giúp bạn nắm vững kiến thức cơ bản về phát triển giao diện web, từ cấu trúc HTML, CSS cho tới JavaScript hiện đại.
-                    </p>
-                    <a href="#" class="btn btn-primary data">Xem chi tiết</a>
+        @foreach ($recentCards as $card)
+            <div class="col-sm-6 col-md-4">
+                <div class="card">
+                    <img src="{{ asset('storage/' . $card->image) }}" class="card-img-top" alt="{{ $card->title }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ $card->title }}</h5>
+                        <p class="card-text">{{ $card->description }}</p>
+                        <a href="{{ route('setcard.show', $card->id) }}" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="Course Image">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Học lập trình Web Frontend với HTML, CSS, và JavaScript</h5>
-                    <p class="card-text">
-                        ới JavaScript hiện đại.
-                    </p>
-                    <a href="#" class="btn btn-primary data">Xem chi tiết</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="Course Image">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Học lập trình Web Frontend với HTML, CSS, và JavaScript</h5>
-                    <p class="card-text">
-                        về phát triển giao diện web, từ cấu trúc HTML, CSS cho tới JavaScript hiện đại.
-                    </p>
-                    <a href="#" class="btn btn-primary data">Xem chi tiết</a>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
             <h3 class="fw-bold mb-3">Nổi bật</h3>
         </div>
-        <div class="ms-md-auto py-2 py-md-0">
-            <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-            <a href="#" class="btn btn-primary btn-round">Thêm thẻ</a>
-        </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="Course Image">
-                <div class="card-body  text-center">
-                    <h5 class="card-title">Học lập trình Web Frontend với HTML, CSS, và JavaScript</h5>
-                    <p class="card-text">
-                        Đây là khóa học giúp bạn nắm vững kiến thức cơ bản về phát triển giao diện web, từ cấu trúc HTML, CSS cho tới JavaScript hiện đại.
-                    </p>
-                    <a href="#" class="btn btn-primary data">Xem chi tiết</a>
+        @foreach ($featuredCards as $card)
+            <div class="col-sm-6 col-md-4">
+                <div class="card">
+                    <img src="{{ asset('storage/' . $card->image) }}" class="card-img-top" alt="{{ $card->title }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ $card->title }}</h5>
+                        <p class="card-text">{{ $card->description }}</p>
+                        <a href="{{ route('setcard.show', $card->id) }}" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="Course Image">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Học lập trình Web Frontend với HTML, CSS, và JavaScript</h5>
-                    <p class="card-text">
-                        ới JavaScript hiện đại.
-                    </p>
-                    <a href="#" class="btn btn-primary data">Xem chi tiết</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x180" class="card-img-top" alt="Course Image">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Học lập trình Web Frontend với HTML, CSS, và JavaScript</h5>
-                    <p class="card-text">
-                        về phát triển giao diện web, từ cấu trúc HTML, CSS cho tới JavaScript hiện đại.
-                    </p>
-                    <a href="#" class="btn btn-primary data">Xem chi tiết</a>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 </div>  
 @stop()

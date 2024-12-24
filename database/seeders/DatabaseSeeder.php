@@ -14,14 +14,11 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    public function run()
     {
-        Comment::factory(10)->create();
-        // Admin::factory()->count(2)->create();
-        // Admin::factory()->create([
-        //     'username' => 'chaomoinguoi',
-        //     'email' => 'chaomoinguoi@gmail.com',
-        //     'password' => '123456',
-        // ]);
+        // Tạo người dùng cho từng tháng
+        for ($month = 1; $month <= 12; $month++) {
+            User::factory()->createdAt($month)->create();
+        }
     }
 }

@@ -42,12 +42,13 @@
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                                 <td>
-                                    <a href="{{ route('customer.edit', $item->id) }}"class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="{{ route('customer.setcards', $item->id) }}"class="btn btn-success btn-sm">Bộ thẻ</a>
+                                    <a href="{{ route('customer.edit', $item->id) }}"class="btn btn-primary btn-sm">Sửa</a>
                                     <form action="{{ route('customer.destroy', $item->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                     </form>
                                 </td>
                             </tr>

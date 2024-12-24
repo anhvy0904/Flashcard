@@ -13,10 +13,10 @@ class Card extends Model
         'question',
         'answer',
         'image',
-        'set_card_id',
+        'setcard_id',
     ];
     public function setCard()
     {
-        return $this->belongsTo(SetCard::class);
+        return $this->belongsTo(SetCard::class,'setcard_id');
     }
 }

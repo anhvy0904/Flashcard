@@ -28,7 +28,17 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'created_at' => fake()->dateTime(),
         ];
+    }
+    public function createdAt($month)
+    {
+        return $this->state(function (array $attributes) use ($month) {
+            return [
+                'created_at' => now()->startOfYear()->addMonths($month - 1),
+                'updated_at' => now()->startOfYear()->addMonths($month - 1),
+            ];
+        });
     }
 
     /**
